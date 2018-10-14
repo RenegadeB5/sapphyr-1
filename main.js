@@ -1,21 +1,58 @@
+var Discord = require('discord.js');
 var path = require("path");
 var config = require("./localdata/config.json");
 var commando = require("discord.js-commando");
 var { initializeServices, removeServices, services } = require("./services");
 var utils = require("./utils");
-
+var fs = require('file-system');
+let msg;
+let msgArray;
+let args;
+let cmd;
+let commandfile;
 var client = new commando.Client({
 	owner: config.owners,
 	commandEditableDuration: 0,
 	nonCommandEditable: false,
 	unknownCommandResponse: false,
-	commandPrefix: "_"
+	commandPrefix: "_",
 });
+let prefix = "_";
 
+client.commands = new Discord.Collection();
+
+fs.readdir("./commands/nonCommando", (err, files) => {
+
+	if(err) console.log(err);
+	let jsfile = files.filter(f => f.split(".").pop() === "js");
+	if(jsfile.length <= 0){
+	  console.log("Couldn't find commands.");
+	  return;
+	}
+  
+  jsfile.forEach((f, i) =>{
+	let props = require(`./commands/nonCommando/${f}`);
+	console.log(`${f} loaded!`);
+	if (props.help && props.help.name) {
+	  client.commands.set(props.help.name, props);
+	} else {
+	  console.error(`File: ${f} does not have module.exports.help or exports.help.name property!`);
+		   }
+	  });
+  });
+
+client.on("message", msg => {
+		 msgArray = msg.content.split(" ");
+		 cmd = msgArray[0];
+		 args = msgArray.slice(1);
+	  
+		 commandfile = client.commands.get(cmd.slice(prefix.length));
+		if(commandfile) commandfile.run(client,msg,args)
+	});
 
 client
 	.on("ready", () => {
-		console.log(`Logged in as ${client.user.username}#${client.user.discriminator} (${client.user.id})`);
+		console.log(`Logged in as ${client.user.tag} - (${client.user.id})`);
 		client.user.setActivity("with sapphires!");
 	})
 	.on("commandError", (cmd, err) => {
