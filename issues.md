@@ -3,13 +3,8 @@
   <li>Reference Error: msg is not defined. Affected files: ban.js, errorEmbeds.js, main.js.</li>
 </ul>
 
-<style>
-.msg-notdefined {
-  font-size: 75%;
-  }
-
 <center> Error Responces </center>
-<p class="msg-notdefined">(node:824) UnhandledPromiseRejectionWarning: ReferenceError: msg is not defined
+<p style="font-size:"75%;" text-align:"center;">node:824) UnhandledPromiseRejectionWarning: ReferenceError: msg is not defined
     at Object.module.exports.missingPerms (C:\Users\ignore\OneDrive\Desktop\Sapphyr\utils\errorEmbeds.js:35:5)
     at Object.exports.run (C:\Users\ignore\OneDrive\Desktop\Sapphyr\commands\nonCommando\ban.js:6:63)
     at CommandoClient.client.on.msg (C:\Users\ignore\OneDrive\Desktop\Sapphyr\main.js:50:31)
