@@ -47,7 +47,7 @@ client.on("message", msg => {
 		 args = msgArray.slice(1);
 	  
 		 commandfile = client.commands.get(cmd.slice(prefix.length));
-		if(commandfile) commandfile.run(client,msg,args)
+                 if(commandfile) commandfile.run(client,msg,args)
 	});
 
 client
