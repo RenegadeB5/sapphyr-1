@@ -31,13 +31,14 @@ module.exports = {
 				let query = { name: username}
 				async function sendLink() {
 					let result = await global.client.datahandler.fetchLink(query);
+					let notes = result[result.length-1].notes;
 					if (result[result.length-1] === undefined) {
 						global.client.users.get(userid).send('Sorry, this invite link is no longer avalable.');
 						console.log(result);
 						reaction.message.delete();
 					}
 					else {
-						global.client.users.get(userid).send(result[result.length-1].link + '\nNotes:' + ' ' + result[result.length-1].notes);               
+						global.client.users.get(userid).send(result[result.length-1].link + '\nNotes:' + ' ' + notes);               
 						if (members.includes(username) === true) {
 							return;
 						}
@@ -45,7 +46,7 @@ module.exports = {
 							let embed = new Discord.RichEmbed()
 							.setColor(0x0000FF)
 							.setTitle(username)
-							.addField('Party invite', result[result.length-1].notes)
+							.addField('Party invite', notes)
 							.addField('Members', members + '\n' + username)
 							.setFooter('React with 🔗 to recieve the link, \nReact with ☠ if the link is invalid, \n And react with ⚠ if there is a troller present. \n Be aware that false alarms are punishable.')                  
 							reaction.message.edit({embed});  
