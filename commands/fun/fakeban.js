@@ -1,38 +1,36 @@
-const { Command } = require('discord.js-commando');
-const Discord = require('discord.js');
+var { Command } = require('discord.js-commando');
+var { RichEmbed } = require('discord.js');
 
-module.exports = class FakeBan extends Command {
+module.exports = class FakeBanCommand extends global.utils.baseCommand {
     constructor(client){
         super(client, {
             name: 'fakeban',
-            group: 'fun',
             memberName: 'fakeban',
-            examples: ['_fakeban @user LoLoLoLoL'],
+            group: 'fun',
             description: 'Fake ban a guild member.',
             args: [
                 {
-                    key: 'fUser',
-                    prompt: 'Who to fake ban?',
+                    key: 'user',
+                    prompt: 'The user to fakeban.',
                     type: 'user'
                 },
                 {
                     key: 'reason',
-                    prompt: 'Reason for the fake ban.',
-                    type: 'string'
+                    prompt: 'The reason for the fakeban.',
+                    type: 'string',
+                    default: 'N/A'
                 }
             ]
         })
     }
-    async run(msg, { fUser, reason }){
-        console.log(fUser);
-        let fakeEmbed = new Discord.RichEmbed()
-        .setTitle(`User Banned.`)
-        .setDescription(`${fUser} has been banned from ${msg.guild.name}.`)
-        .addField("Action by:", msg.author.tag)
-        .addField("Banned User:", fUser)
-        .addField("Reason", reason);
-        msg.delete();
-        msg.channel.send(fakeEmbed).then(msg.channel.send(`**${fUser}** has left the guild.`));
-        fUser.send(`Lmao! You got ~~fake~~ banned from ${msg.guild.name}!`);
+    async task(ctx) {
+        if (!ctx.args.user) return await ctx.message.channel.send("No user was specified for the fakeban.");
+        let embed = new Discord.RichEmbed()
+        .setTitle("User Banned.")
+        .setDescription(`${ctx.args.user} has been ~~fake~~ banned from ${ctx.message.guild.name}.`)
+        .addField("Banned user", ctx.args.user)
+        .addField("Action by:", ctx.message.author)
+        .addField("Reason", ctx.args.reason);
+    return await ctx.message.channel.send(embed);
     }
 }

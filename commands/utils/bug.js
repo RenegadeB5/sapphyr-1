@@ -7,8 +7,8 @@ module.exports = class BugCommand extends global.utils.baseCommand {
             name: 'bug',
             memberName: 'bug',
             group: 'utils',
-            description: 'Report a bug.',
-            examples: ["_bug desc <image attachment>"],
+            description: 'Report a bug. Ex. <bug <description> <attachment>',
+            examples: ["<bug <bugdescription> <image attachment>"],
             args: [
                 {
                     key: 'desc',

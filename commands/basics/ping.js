@@ -9,8 +9,8 @@ module.exports = class PingCommand extends global.utils.baseCommand {
         });
     }
 
-    async task({ message }) {
-        let pingMsg = await message.channel.send("🔁 | Pinging ...");
-        return await pingMsg.edit(`✅ | ${pingMsg.createdTimestamp - message.createdTimestamp}ms.`);
+    async task(ctx) {
+        let pingMsg = await ctx.message.channel.send("🔁 | Pinging ...");
+        return await pingMsg.edit(`✅ | ${pingMsg.createdTimestamp - ctx.message.createdTimestamp}ms.`);
     }
 };

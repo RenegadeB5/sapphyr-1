@@ -25,6 +25,21 @@ class dataHandler {
         this.db = null;
     }
 
+    async insertLink(insert) {
+        let links = await this.db.collection("partylinks");
+        return await links.insertOne(insert);
+    }
+
+    async fetchLink(query) {
+        let links = await this.db.collection("partylinks");
+        return await links.find(query).toArray();  
+    }
+    
+    //async remove1Link() {
+    //    let links = await this.db.collection("partylinks");
+    //    return await links.findOneAndDelete({});
+    //}
+
     async getGuilds() {
         let guilds = await this.db.collection("guilds");
         return await guilds.find().toArray();
@@ -47,7 +62,7 @@ class dataHandler {
         let guilds = await this.db.collection("guilds");
         return await guilds.insertOne({
             id: guild.id,
-            prefix: "_",
+            prefix: "<",
             permissions: [],
             linkdetection: { enabled: false },
             nadekoconnector: { enabled: false },

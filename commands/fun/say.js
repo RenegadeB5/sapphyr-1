@@ -1,28 +1,27 @@
-const { Command } = require('discord.js-commando');
-const Discord = require('discord.js');
+var { Command } = require('discord.js-commando');
+var { RichEmbed } = require('discord.js');
 
-module.exports = class SayCommand extends Command {
-    constructor(client) {
+module.exports = class SayCommand extends global.utils.baseCommand {
+    constructor(client){
         super(client, {
             name: 'say',
-            group: 'fun',
             memberName: 'say',
-            description: 'bot sends args',
-            userPermissions: ["MANAGE_MESSAGES"],
+            group: 'fun',
+            description: 'Make the bot say something.',
             args: [
                 {
-                    key: 'text',
-                    prompt: 'What text would you like the bot to say?',
-                    type: 'string'
+                    key: 'context',
+                    prompt: 'Text the bot replies with.',
+                    type: 'string',
+                    default: 'You did not specify what to say, so I said this.'
                 }
             ]
-        });
+        })
     }
-
-    run(msg, { text }) {
-        msg.delete();
-        let sayEmbed = new Discord.RichEmbed()
-        .setDescription(text);
-        return msg.channel.send(sayEmbed);
+    async task(ctx) {
+        let embed = new RichEmbed()
+        .setDescription(ctx.args.context);
+        ctx.message.delete();
+    return await ctx.message.channel.send(embed);
     }
-};
+}

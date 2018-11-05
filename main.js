@@ -1,16 +1,23 @@
 var path = require("path");
 var config = require("./localdata/config.json");
 var commando = require("discord.js-commando");
+const MongoClient = require('mongodb').MongoClient;
+const MongoDBProvider = require('mongodb');
+
 var { initializeServices, removeServices, services } = require("./services");
 var utils = require("./utils");
 const log = require("fancy-log");
 
+setInterval(function logTime(){
+	log("Time Update.");
+}, 300000);
+
 var client = new commando.Client({
-	owner: config.bot.owners,
+	owner: "375772663794106368",
 	commandEditableDuration: 0,
 	nonCommandEditable: false,
 	unknownCommandResponse: false,
-	commandPrefix: "_"
+	commandPrefix: "<"
 });
 
 client
@@ -38,7 +45,7 @@ client
 			["fun", "Fun, time wasting commands."],
 			["utils", "General utility commands."],
 			["nadekoconnector", "Nadekoconnector commands."],
-			["challenges", "Commands for SBK Challenges."]
+			["challenges", "Commands for SBK Challenges"]
 		]);
 		log("Command groups initialized.");
 		client.registry.registerCommandsIn(path.join(__dirname, "commands"));
@@ -62,5 +69,8 @@ client
 	.on("groupStatusChange", (guild, group, enabled) => {
 		log(`Group ${group.id} ${enabled ? "enabled" : "disabled"} ${guild ? `in guild ${guild.name} (${guild.id})` : "globally"}.`);
 	});
+global.client = client;
+global.MongoClient = MongoClient;
+global.MongoDBProvider = MongoDBProvider;
 
 client.login(config.bot.token);
